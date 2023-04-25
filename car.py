@@ -26,5 +26,5 @@ def run(left_speed, right_speed):
     else:
         right_speed=0
 
-    ch1.pulse_width(2880+int(abs(left_speed)))
-    ch2.pulse_width(2880-int(abs(right_speed)))
+    ch1.pulse_width(2880+int(left_speed))
+    ch2.pulse_width(2880-int(right_speed))
