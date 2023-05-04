@@ -1,4 +1,4 @@
-from pyb import millis
+from time import ticks
 from math import pi, isnan
 
 class PID:
@@ -13,7 +13,7 @@ class PID:
         self._last_derivative = float('nan')
 
     def get_pid(self, error, scaler):
-        tnow = millis()
+        tnow = ticks()
         dt = tnow - self._last_t
         output = 0
         if self._last_t == 0 or dt > 1000:

@@ -1,30 +1,19 @@
-from pyb import Pin, Timer, delay
-inverse_left=False
-inverse_right=True
-left =  Pin('P7', Pin.OUT_PP)
-right =  Pin('P8', Pin.OUT_PP)
-left.low()
-right.low()
-tim = Timer(4, freq=100)
-ch1 = tim.channel(1, Timer.PWM, pin=left)
-ch2 = tim.channel(2, Timer.PWM, pin=right)
-ch1.pulse_width(2880)
-ch2.pulse_width(2880)
-delay(5000)
+# duty中位：75
+# 左轮正:75+, 右轮正:75-
+
+from machine import Timer,PWM
+import time
+#PWM 通过定时器配置，接到 IO9 引脚
+tim1 = Timer(Timer.TIMER0, Timer.CHANNEL0, mode=Timer.MODE_PWM)
+tim2 = Timer(Timer.TIMER1, Timer.CHANNEL1, mode=Timer.MODE_PWM)
+
+left = PWM(tim1, freq=500, duty=50, pin=8)
+right = PWM(tim2, freq=500, duty=50, pin=10)
+#循环发出不同频率响声。
+left.duty(75)
+right.duty(75)
+time.sleep(5)
+
 def run(left_speed, right_speed):
-    if left_speed>0:
-        left_speed+=40
-    elif left_speed<0:
-        left_speed-=40
-    else:
-        left_speed=0
-
-    if right_speed>0:
-        right_speed+=40
-    elif right_speed<0:
-        right_speed-=40
-    else:
-        right_speed=0
-
-    ch1.pulse_width(2880+int(left_speed))
-    ch2.pulse_width(2880-int(right_speed))
+    left.duty(75+left_speed)
+    right.duty(75-right_speed)
